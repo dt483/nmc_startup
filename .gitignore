@@ -1,0 +1,4 @@
+#Ignore Debug and Release builds
+/Debug/
+/Release/
+

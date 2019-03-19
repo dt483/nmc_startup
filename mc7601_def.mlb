@@ -1,0 +1,93 @@
+// Macro NMC_DEF define constants for loader and sync functions for NMC on SoC
+
+macro NMC_DEF()
+
+// Loader status flag constants
+const READY_FOR_COMMAND = 4h;
+const PROGRAM_STOPPED   = 2h;
+const SYNC_FLAG         = 1h;
+
+// Command to loader flags
+const MOVE_BLOCK   = 1h;        // Move memory block.
+const FILL_BLOCK   = 2h;        // Fill memory block.
+const RUN_PROGRAM  = 4h;        // Run user program.
+const ANY_COMMAND  = 07h;       // Mask is any command set.
+//const NULL_OPERATION = 1h;
+//const RUN_PROGRAM    = 2h;
+//const ALL_COMMAND    = 3h;
+
+struct SyncroBlock
+    syncFlag   : word;  // Syncro flag.
+    array_addr : word;  // Sync array address.
+    array_len  : word;  // Sync array length in 32-bit words.
+    value      : word;  // Sync value.
+end SyncroBlock;
+
+// Struct of syncro function memory block
+//struct SyncroBlock
+//	syncFlag:   word; // Syncro flag
+//	value:      word; // Sync value
+//	array_addr: word; // Sync array address
+//	array_len:  word; // Sync array length in 32-bit words
+//end SyncroBlock;
+
+// ISR status flag constants
+const ISR_READY_FOR_COMMAND = 1h;
+//const ISR_LOADER_OK = 2h;
+
+// Command to ISR flags
+const ISR_NULL_OPERATION = 1h;
+const ISR_FINISH         = 2h;
+const ISR_CALL_USER_ISR  = 4h;
+const ISR_ALL_COMMAND    = 7h;
+
+// Addresses of loader syncro words
+const TO_ARM          = 100h;
+const FROM_ARM        = 101h;
+
+// Address of user program entry point
+const USER_PROGRAM    = 102h;
+
+// Address of user program return value
+const RETURN_VALUE    = 103h;
+
+// Addresses of syncro blocks for syncro functions
+
+const SYNC_TO_ARM     = 104h;
+const SYNC_FROM_ARM   = 108h;
+
+// Addresses of interrupt status
+const HP_INT_SEND     = 10Ch;
+const LP_INT_SEND     = 10Dh;
+
+// Addresses of ISR syncro words
+const ISR_TO_ARM      = 10Eh;
+const ISR_FROM_ARM    = 10Fh;
+
+// Address of user HP interrupt ISR entry point
+const LIBINT_INT_MANAGER_ADDR = 110h; //USER_ISR
+
+// Address of magic code
+const MAGIC_CODE_ADDR = 111h;
+
+// Address of NMI hardware vector opcodes
+const NMI_HARD_VECT   = 112h;
+
+
+//Command to ARM handler status values
+const CMD_HANDLER_IDLE = 0h;
+const CMD_HANDLER_IN_PROGRESS = 1h;
+
+struct CommandBlock
+    syncFlag      : word;  // Syncro flag.
+    commantType   : word;  // Command type value.
+    bufferAddr    : word;  // Command data buffer address.
+    bufferLen     : word;  // Command data buffer length in 32-bit words.
+    handlerStatus : word;  // ARM handler status values
+
+end CommandBlock;
+
+//Address of command block to ARM
+const CMD_TO_ARM      = 114h;
+
+end NMC_DEF;
